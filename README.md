@@ -64,3 +64,115 @@
      客户端允许跨域
      <script src="http://127.0.0.1:8887"></script>
      浏览器允许在link,script,img标签写的请求跨域
+     fetch('http://localhost:8887',{
+		method: 'post',
+		headers:{
+			'X-Test-Cors':'123'
+		}
+	})
+      服务端设置
+      response.writeHead(200,{
+		'Access-Control-Allow-Origin':'http://baidu.com',
+		'Access-Control-Allow-Headers':'x-test-cors',
+		'Access-Control-Allow-Methods':'POSt,put,Delete',
+		'Access-Control-Max-Age':'1000',
+	})
+## 预请求 
+
+    允许方法
+    Get
+    Head
+    Post
+    
+    允许Content-type
+    text/plain
+    multipart/form-data
+    application/x-www-form-urlencoded
+    
+    其他限制
+    请求头限制
+    fetch('http://localhost:8887',{
+			method: 'post',
+			headers:{
+				'X-Test-Cors':'123'
+			}
+		})
+ ## 缓存头Cache-Controlde 
+    可缓存
+    puiblic
+    private
+    no-cache(服务器验证之后可以缓存)
+    到期
+    max-age=<seconds>(浏览器做的缓存设置)
+    s-maxage=<seconds>(代理服务器做的缓存时间设置)
+    max-stale=<seconds>(使用过期的缓存)
+    response.writeHead(200,{
+		'Content-Type': 'text/javascript',
+		'Cache-control':'max-age=200'
+	})
+    重新验证
+    must-revalidate
+    proxy-revalidate
+    其他
+    no-store(不能缓存)
+    no-transform(不能转换)
+## last-Modified
+    上次修改时间
+    配合If-Modified-Since或者If-Unmodified-Since使用
+    对比上次修改时间以验证资源是否需要更新
+## Etag
+    数据签名
+    配合if-Match或者if-Non-Match使用
+    对比资源的签名判断时候使用缓存
+    const etag = request.headers['if-none-match'];
+		if(etag==777){
+			console.log(etag)
+			response.writeHead(304,{
+				'Content-Type': 'text/javascript',
+				'Cache-control':'max-age=200000, no-cache',
+				'Last-Modified':'123',
+				'Etag':'777'
+			})
+			response.end();
+		}else{
+			response.writeHead(200,{
+				'Content-Type': 'text/javascript',
+				'Cache-control':'max-age=200000, no-cache',
+				'Last-Modified':'123',
+				'Etag':'777'
+			})
+			response.end('console.log("script 1111111")');
+		}  
+		
+## Cookie 属性
+    max-age和expires设置过期时间
+    Secure只在https的时候发送
+    httpOnly无法通过document.cookie访问
+    
+## 数据协商
+    分类
+    请求
+    返回
+    //浏览器设置
+    Accecp (定数据类型)
+    Accept-Encoding(编码方式传输)
+    Accept-Language(展示语言)
+    User-Agent(端口页面 移动端和pc端)
+    
+    //服务端设置
+    Cntent-type (数据格式)
+    Content-Encoding
+    Content-language 
+## redirect
+     if(request.url==='/'){
+                //302 临时跳转 301 永久跳转区别浏览器会直接用/new跳转
+		response.writeHead(302,{
+			'Location':'/new'
+		})
+	}
+	if(request.url==='/'){
+		response.writeHead(200,{
+			'Content-Type':'text/html'
+		})
+		response.end('<div>this is content</div>');
+	}
