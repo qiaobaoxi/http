@@ -176,3 +176,18 @@
 		})
 		response.end('<div>this is content</div>');
 	}
+   
+    Vary 是一个HTTP响应头部信息，它决定了对于未来的一个请求头，应该用一个缓存的回复(response)还是向源服务器请求一个新的回复
+    后端
+    response.writeHead(304,{
+				
+				'Cache-control':'max-age=200000,  s-maxage=20 no-cache',
+				 'Vary':'x-test-cache'
+	})
+	
+	  fetch('http://localhost:8887',{
+			method: 'post',
+			headers:{
+				'X-Test-cache':'123'
+			}
+		})
