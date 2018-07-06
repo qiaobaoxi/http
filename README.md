@@ -52,3 +52,15 @@
     urn 永久统一资源定位符
     在资源移动之后还能被找到
     
+## 跨域
+     服务端允许跨域方法 
+     response.writeHead(200,{
+		'Access-Control-Allow-Origin':'*'
+	})
+     允许百度访问
+     response.writeHead(200,{
+		'Access-Control-Allow-Origin':'http://baidu.com'
+	})
+     客户端允许跨域
+     <script src="http://127.0.0.1:8887"></script>
+     浏览器允许在link,script,img标签写的请求跨域
